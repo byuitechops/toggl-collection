@@ -40,7 +40,7 @@ firebase.auth().onAuthStateChanged(user => {
                 // don't have toggle api token
                 // TODO: prompt for token and check if it works
                 console.log('need toggltoken');
-                window.location = './togglToken.html';
+                window.location = './togglToken.html?uid='+user.uid;
             } else {
                 // we are good to go
             }

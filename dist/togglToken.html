@@ -9,6 +9,58 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script>
+      /* Initialize Firebase */
+      var config = {
+        apiKey: "AIzaSyDivGb3qYsVppVyWu0kQP9TsMxJKVI_2EE",
+        authDomain: "toggl-collection.firebaseapp.com",
+        databaseURL: "https://toggl-collection.firebaseio.com",
+        projectId: "toggl-collection",
+        storageBucket: "toggl-collection.appspot.com",
+        messagingSenderId: "321698368957"
+      };
+      firebase.initializeApp(config);
+
+      function testToken(token){
+        return new Promise((resolve,reject) => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4){
+                    if (this.status == 200) {
+                        resolve()
+                    } else {
+                        reject()
+                    }
+                }
+            };
+            xhttp.open("GET", "https://toggl.com/api/v9/me", true);
+            xhttp.setRequestHeader('Authorization','Basic '+btoa(`${token}:api_token`))
+            xhttp.send();
+        })
+      }
+
+      function onsubmit(){
+        var params = (new URL(document.location)).searchParams;
+        var uid = params.get('uid')
+        if(!uid){
+            throw new Error('uid was not found in the query params')
+        }
+        var toggltoken = document.getElementById('togglToken').value
+        if(!toggltoken){
+            throw new Error('no toggl token entered')
+        }
+        alert('stop')
+        testToken(toggltoken)
+            .then(() => firebase.database().ref(`users/${uid}/toggltoken`).set(toggltoken))
+            // .then(() => window.location.href="./index.html")
+            .catch(() => {
+                // TODO actually display an error
+                throw new Error("Bad token")
+            })
+      }
+    </script>
 </head>
 
 <body>
@@ -32,7 +84,7 @@
                 </div>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light red darken-4" type="submit" name="action">Save</button>
+                <button class="btn waves-effect waves-light red darken-4" name="action" onclick="onsubmit()">Save</button>
             </div>
         </form>
     </div>
