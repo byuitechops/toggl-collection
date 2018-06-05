@@ -1,0 +1,22 @@
+
+/* MATERALIZE changes */
+.brand-logo {
+    margin-left: 20px;
+}
+
+h1 {
+    font-size: 36pt !important;
+}
+
+ /* label focus color */
+ .input-field input[type=text]:focus+label,
+ .input-field input[type=password]:focus+label {
+     color: #530b0b !important;
+ }
+
+ /* label underline focus color */
+ .input-field input[type=text]:focus,
+ .input-field input[type=password]:focus {
+     border-bottom: 1px solid #921616 !important;
+     box-shadow: 0 1px 0 0 #921616 !important;
+ }
