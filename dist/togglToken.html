@@ -5,42 +5,36 @@
     <title>Toggl Token</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet">
-    <link href="main.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </head>
 
 <body>
+    <nav>
+        <div class="nav-wrapper red darken-4">
+            <a href="#" class="brand-logo">Toggl App</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    <a href='./index.html'>Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
-        <div class="col s12">
-            <div class="card">
-                <div class="card-panel red darken-4 white-text">
-                    <h3>Log in</h3>
-                </div>
-                <div class="row">
-                    <form class="col offset-s1 s10">
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <input id="username" type="text" class="validate">
-                                <label for="username">Email</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <input id="password" type="password" class="validate">
-                                <label for="password">Password</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s11">
-                                <button class="btn waves-effect vaves-light red darken-1" type="submit" name="action">Login</button>
-                            </div>
-                        </div>
-                    </form>
+        <h1>Please enter your Toggl token:</h1>
+        <form>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="togglToken" type="text" class="validate">
+                    <label for="togglToken">Token</label>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light red darken-4" type="submit" name="action">Save</button>
+            </div>
+        </form>
     </div>
 </body>
 
