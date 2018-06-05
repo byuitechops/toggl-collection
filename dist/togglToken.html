@@ -12,19 +12,21 @@
 </head>
 
 <body>
-    <nav>
-        <div class="nav-wrapper red darken-4">
-            <a href="#" class="brand-logo">Toggl App</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>
-                    <a href='./index.html'>Home</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
+    <header>
+        <nav>
+            <div class="nav-wrapper red darken-4">
+                <a href="#" class="brand-logo">Toggl App</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a href='./index.html'>Home</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
         <h1>Please enter your Toggl token:</h1>
-        <form>
             <div class="row">
                 <div class="input-field col s12">
                     <input id="togglToken" type="text" class="validate">
@@ -32,10 +34,9 @@
                 </div>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light red darken-4" type="submit" name="action">Save</button>
+                <button class="btn waves-effect waves-light red darken-4">Save</button>
             </div>
-        </form>
-    </div>
+    </main>
 </body>
 
 </html>

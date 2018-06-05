@@ -31,7 +31,8 @@ firebase.auth().onAuthStateChanged(user => {
                 // they don't have access to the database
                 // TODO: display error
                 console.error('no access');
-                document.querySelector('#msg').innerHTML = 'No Access. Please have Ben (or Josh) add you to Firebase';
+                document.querySelector('#msg').innerHTML = '<p>No Access. Please have Ben (or Josh) add you to Firebase</p>';
+                document.querySelector('#msg').classList.remove('hide');
                 return;
             }
             console.log('database:', users);
@@ -40,7 +41,7 @@ firebase.auth().onAuthStateChanged(user => {
                 // don't have toggle api token
                 // TODO: prompt for token and check if it works
                 console.log('need toggltoken');
-                window.location = './togglToken.html';
+                // window.location = './togglToken.html'; // TESTING enable for production
             } else {
                 // we are good to go
             }
