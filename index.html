@@ -3,13 +3,35 @@
 
 <head>
     <title>Home</title>
-    <script src="./bundle.js"></script>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script>
+        /* Initialize Firebase */
+        var config = {
+            apiKey: "AIzaSyDivGb3qYsVppVyWu0kQP9TsMxJKVI_2EE",
+            authDomain: "toggl-collection.firebaseapp.com",
+            databaseURL: "https://toggl-collection.firebaseio.com",
+            projectId: "toggl-collection",
+            storageBucket: "toggl-collection.appspot.com",
+            messagingSenderId: "321698368957"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <!-- CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet">
     <link type="text/css" href="./style.css" rel="stylesheet" />
 
+    <!-- Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="./moment.min.js"></script>
+
+    <script src="./main.js"></script>
 </head>
 
 <body>
@@ -39,10 +61,11 @@
 
     <main class="container">
         <div class="col s12">
-            <div id="msg" class="row red lighten-5 hide">
-            </div>
+            <div id="msg" class="row red lighten-5 hide"></div>
+            <svg width="100%" height="500"></svg>
         </div>
     </main>
+    <script src="./chart.js"></script>
 </body>
 
 </html>

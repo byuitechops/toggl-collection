@@ -28,21 +28,11 @@
         firebase.initializeApp(config);
 
         function get(token,uri) {
-            return new Promise((resolve, reject) => {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4) {
-                        if (this.status == 200) {
-                            resolve(JSON.parse(xhttp.responseText))
-                        } else {
-                            reject(this.status)
-                        }
-                    }
-                };
-                xhttp.open("GET", "https://toggl.com"+uri, true);
-                xhttp.setRequestHeader('Authorization', 'Basic ' + btoa(`${token}:api_token`))
-                xhttp.send();
-            })
+            return fetch('https://toggl.com'+uri,{
+                headers:{
+                    Authorization:'Basic '+btoa(`${token}:api_token`)
+                }
+            }).then(r => r.json())
         }
 
         function displayWorkspaces(user){
@@ -54,8 +44,7 @@
                 // (may be called multiple times)
                 console.log(workspaces,defaultWorkspace)
 
-            }).catch(console.error)
-            // .catch(() => {throw new Error('current token is invalid')})
+            }).catch(() => {throw new Error('current token is invalid')})
         }
 
         function save() {

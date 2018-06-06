@@ -1,0 +1,18 @@
+:authority: www.toggl.com
+:method: GET
+:path: /api/v9/me
+:scheme: https
+accept: application/json, text/javascript, */*; q=0.01
+accept-encoding: gzip, deflate, br
+accept-language: en-US,en;q=0.9
+app-version: 4.10.10
+authorization: Basic MDZmZGFkMGIyYWI4YTMxZWM3Yzg0MDFlZWVjOTVjYzY6YXBpX3Rva2Vu
+cache-control: no-cache
+content-type: application/json
+cookie: _ga=GA1.2.1346993986.1527874257; _referrer_og=https%3A%2F%2Fwww.google.com%2F; _jsuid=87889755; GCLB=CPW0v8bhqdnaGA; user_id=2725431; remember_me=true; toggl_api_session_new=MTUyODE1NjI2MXxEdi1CQkFFQ180SUFBUkFCRUFBQVlQLUNBQUVHYzNSeWFXNW5EQXdBQ25ObGMzTnBiMjVmYVdRR2MzUnlhVzVuREQ0QVBIUnZaMmRzTFdGd2FTMXpaWE56YVc5dUxUSXRNR1V5TURabVlXUXhPVEV6TUdWbE1tTmlaR0kxTnpFNE56VTNPRFZoTXpSaE1EQXpZVFprTVE9PXyA__s_zuqxLOoB5NHMCbjOlCsDrvtDjfUCbY4-M5A-zg==; _first_pageview=1; heatmaps_g2g_100857897=no; _eventqueue=%7B%22heatmap%22%3A%5B%5D%2C%22events%22%3A%5B%5D%7D
+pragma: no-cache
+referer: https://www.toggl.com/app/timer
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36
+x-requested-with: XMLHttpRequest
+
+fetch('https://www.toggl.com/api/v2/me',{headers:{Authorization:'Basic '+btoa(`06fdad0b2ab8a31ec7c8401eeec95cc6:api_token`)}}).then(r => r.json()).then(console.log)
