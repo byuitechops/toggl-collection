@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 import * as qwest from 'qwest';
+import moment from 'moment'
 
 const app = firebase.initializeApp({
     apiKey: 'AIzaSyDivGb3qYsVppVyWu0kQP9TsMxJKVI_2EE',
@@ -44,6 +45,8 @@ firebase.auth().onAuthStateChanged(user => {
                 window.location = './togglToken.html';
             } else {
                 // we are good to go
+                // get(`api/v2/weekly?user_agent=${}&workspace_id=${}&grouping=user`)
+                get(users[user.uid].toggltoken,'/api/v8/workspaces').then(console.log)
             }
         });
     } else {
@@ -63,4 +66,12 @@ function openDatabase(user, cb) {
         }
         cb(null, users);
     }, err => cb(err));
+}
+
+function get(apiToken,uri){
+    return new Promise((resolve,reject) => {
+        qwest.get('https://www.toggl.com'+uri,{},{
+        headers: { Authorization: "Basic "+btoa(`${apiToken}:api_token`) },
+        }).then((xhr,res) => resolve(res)).catch(reject)
+    })
 }

@@ -14,7 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
     <script>
         // user's id - gotten through firebase-auth
-        let uid
+        let uid,user
 
         /* Initialize Firebase */
         var config = {
@@ -27,48 +27,71 @@
         };
         firebase.initializeApp(config);
 
-
-        function testToken(token) {
+        function get(token,uri) {
             return new Promise((resolve, reject) => {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4) {
                         if (this.status == 200) {
-                            resolve()
+                            resolve(JSON.parse(xhttp.responseText))
                         } else {
-                            reject()
+                            reject(this.status)
                         }
                     }
                 };
-                xhttp.open("GET", "https://toggl.com/api/v9/me", true);
+                xhttp.open("GET", "https://toggl.com"+uri, true);
                 xhttp.setRequestHeader('Authorization', 'Basic ' + btoa(`${token}:api_token`))
                 xhttp.send();
             })
         }
 
+        function displayWorkspaces(user){
+            console.log(user.toggltoken)
+            get(user.toggltoken,'/api/v8/workspaces').then(workspaces => {
+                var defaultWorkspace = user.workspace || (workspaces.find(w => w.name.includes('byu')) || workspaces[0]).id
+                
+                // TODO: create a dynamic radio button array with which workspace to use
+                // (may be called multiple times)
+                console.log(workspaces,defaultWorkspace)
+
+            }).catch(console.error)
+            // .catch(() => {throw new Error('current token is invalid')})
+        }
+
         function save() {
-            var params = (new URL(document.location)).searchParams;
-            if (!uid) {
-                throw new Error('user is not logged in')
-            }
+            if (!uid || !user) { return } // error should already be thrown
+
             var toggltoken = document.getElementById('togglToken').value
-            if (!toggltoken) {
+            var workspace // TODO: if the workspace has been displayed, give the selected's id, otherwise undefined
+
+            if (!toggltoken && !user.toggltoken) {
                 throw new Error('no toggl token entered')
             }
-            testToken(toggltoken)
-                .then(() => firebase.database().ref(`users/${uid}/toggltoken`).set(toggltoken))
-                .then(() => window.location.href = "./index.html")
+
+            get(toggltoken || user.toggltoken,'/api/v9/me')
+                .then(() => firebase.database().ref(`users/${uid}/toggltoken`).set(toggltoken || user.toggltoken))
+                .then(() => { 
+                    if(workspace != undefined){
+                        firebase.database().ref(`users/${uid}/workspace`).set(workspace)
+                            .then(() => window.location.href = "./index.html")
+                    }
+                })
                 .catch(() => {
                     // TODO actually display an error
                     throw new Error("Bad token")
                 })
         }
 
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                uid = user.uid
+        firebase.auth().onAuthStateChanged(auth => {
+            if (auth) {
+                uid = auth.uid
+                var first = true
+                firebase.database().ref(`users/${uid}`).on('value',snapshot => {
+                    user = snapshot.val()
+                    displayWorkspaces(user)
+                },() => {throw new Error('user doesn\t have access to the database')})
             } else {
-                throw new Error('user is not logged in')
+                window.location.href = "./login.html"
             }
         })
     </script>
