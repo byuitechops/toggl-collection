@@ -2,28 +2,47 @@
 <html>
 
 <head>
-  <title>Home</title>
-  <script src="./bundle.js"></script>
+    <title>Home</title>
+    <script src="./bundle.js"></script>
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet">
-  <link type="text/css" href="./style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet">
+    <link type="text/css" href="./style.css" rel="stylesheet" />
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </head>
 
 <body>
-  <nav>
-    <div class="nav-wrapper red darken-4">
-      <a href="#" class="brand-logo">Toggl App</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li>
-          <a href='./togglToken.html'>TogglToken</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <div id="msg"></div>
+    <header>
+        <nav class="nav-extended red darken-4">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Toggl App</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a href='./togglToken.html'>TogglToken</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-content red darken-2">
+                <ul class="tabs tabs-transparent">
+                    <li class="tab">
+                        <a href="#">Daniel</a>
+                    </li>
+                    <li class="tab">
+                        <a href="#">Ben</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <main class="container">
+        <div class="col s12">
+            <div id="msg" class="row red lighten-5 hide">
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>

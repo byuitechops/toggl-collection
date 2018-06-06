@@ -2,6 +2,15 @@
     --btn-hover-color: #db2323 !important;
 }
 
+
+#msg {
+    padding: 0 15px;
+    margin: 15px 0;
+    border: 1px solid #B71C1C;
+    background-color: #e67878;
+}
+
+
 /* MATERALIZE changes */
 nav>div {
     padding: 0 30px;

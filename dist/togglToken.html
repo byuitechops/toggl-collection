@@ -11,83 +11,95 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
     <script>
-      /* Initialize Firebase */
-      var config = {
-        apiKey: "AIzaSyDivGb3qYsVppVyWu0kQP9TsMxJKVI_2EE",
-        authDomain: "toggl-collection.firebaseapp.com",
-        databaseURL: "https://toggl-collection.firebaseio.com",
-        projectId: "toggl-collection",
-        storageBucket: "toggl-collection.appspot.com",
-        messagingSenderId: "321698368957"
-      };
-      firebase.initializeApp(config);
+        // user's id - gotten through firebase-auth
+        let uid
 
-      function testToken(token){
-        return new Promise((resolve,reject) => {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4){
-                    if (this.status == 200) {
-                        resolve()
-                    } else {
-                        reject()
+        /* Initialize Firebase */
+        var config = {
+            apiKey: "AIzaSyDivGb3qYsVppVyWu0kQP9TsMxJKVI_2EE",
+            authDomain: "toggl-collection.firebaseapp.com",
+            databaseURL: "https://toggl-collection.firebaseio.com",
+            projectId: "toggl-collection",
+            storageBucket: "toggl-collection.appspot.com",
+            messagingSenderId: "321698368957"
+        };
+        firebase.initializeApp(config);
+
+
+        function testToken(token) {
+            return new Promise((resolve, reject) => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            resolve()
+                        } else {
+                            reject()
+                        }
                     }
-                }
-            };
-            xhttp.open("GET", "https://toggl.com/api/v9/me", true);
-            xhttp.setRequestHeader('Authorization','Basic '+btoa(`${token}:api_token`))
-            xhttp.send();
-        })
-      }
-
-      function onsubmit(){
-        var params = (new URL(document.location)).searchParams;
-        var uid = params.get('uid')
-        if(!uid){
-            throw new Error('uid was not found in the query params')
-        }
-        var toggltoken = document.getElementById('togglToken').value
-        if(!toggltoken){
-            throw new Error('no toggl token entered')
-        }
-        alert('stop')
-        testToken(toggltoken)
-            .then(() => firebase.database().ref(`users/${uid}/toggltoken`).set(toggltoken))
-            // .then(() => window.location.href="./index.html")
-            .catch(() => {
-                // TODO actually display an error
-                throw new Error("Bad token")
+                };
+                xhttp.open("GET", "https://toggl.com/api/v9/me", true);
+                xhttp.setRequestHeader('Authorization', 'Basic ' + btoa(`${token}:api_token`))
+                xhttp.send();
             })
-      }
+        }
+
+        function save() {
+            var params = (new URL(document.location)).searchParams;
+            if (!uid) {
+                throw new Error('user is not logged in')
+            }
+            var toggltoken = document.getElementById('togglToken').value
+            if (!toggltoken) {
+                throw new Error('no toggl token entered')
+            }
+            testToken(toggltoken)
+                .then(() => firebase.database().ref(`users/${uid}/toggltoken`).set(toggltoken))
+                .then(() => window.location.href = "./index.html")
+                .catch(() => {
+                    // TODO actually display an error
+                    throw new Error("Bad token")
+                })
+        }
+
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                uid = user.uid
+            } else {
+                throw new Error('user is not logged in')
+            }
+        })
     </script>
 </head>
 
 <body>
-    <nav>
-        <div class="nav-wrapper red darken-4">
-            <a href="#" class="brand-logo">Toggl App</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li>
-                    <a href='./index.html'>Home</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
+    <header>
+        <nav>
+            <div class="nav-wrapper red darken-4">
+                <a href="#" class="brand-logo">Toggl App</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a href='./index.html'>Home</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
         <h1>Please enter your Toggl token:</h1>
-        <form>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="togglToken" type="text" class="validate">
-                    <label for="togglToken">Token</label>
-                </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="togglToken" type="text" class="validate">
+                <label for="togglToken">Token</label>
             </div>
-            <div class="row">
-                <button class="btn waves-effect waves-light red darken-4" name="action" onclick="onsubmit()">Save</button>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light red darken-4" onclick="save()">Save</button>
+        </div>
+    </main>
 </body>
 
 </html>
