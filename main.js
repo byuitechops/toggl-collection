@@ -4,7 +4,7 @@ const GLOBALS = {
     user:null,
     workspace:null,
     toggltoken:null,
-} 
+}; 
     
 
 firebase.auth().onAuthStateChanged(user => {
@@ -34,14 +34,14 @@ firebase.auth().onAuthStateChanged(user => {
                 // don't have toggle api token
                 // TODO: prompt for token and check if it works
                 console.log('need toggltoken');
-                window.location = './togglToken.html';
+                window.location = './settings.html';
             } else {
-                GLOBALS.users = users
-                GLOBALS.user = user
-                GLOBALS.toggltoken = users[user.uid].toggltoken
-                GLOBALS.workspace = users[user.uid].workspace
+                GLOBALS.users = users;
+                GLOBALS.user = user;
+                GLOBALS.toggltoken = users[user.uid].toggltoken;
+                GLOBALS.workspace = users[user.uid].workspace;
                 // we are good to go
-                displayGraph()
+                displayGraph();
             }
         });
     } else {
@@ -69,5 +69,5 @@ function get(token,uri) {
         headers:{
             Authorization:'Basic '+btoa(`${token}:api_token`)
         }
-    }).then(r => r.json())
+    }).then(r => r.json());
 }

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Toggl Token</title>
+    <title>Settings</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet">
     <link href="./style.css" rel="stylesheet">
@@ -13,8 +13,13 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
     <script>
+        /* needed for dropdown */
+        $(document).ready(function () {
+            $('select').material_select();
+        });
+
         // user's id - gotten through firebase-auth
-        let uid,user
+        let uid, user
 
         /* Initialize Firebase */
         var config = {
@@ -27,28 +32,34 @@
         };
         firebase.initializeApp(config);
 
-        function get(token,uri) {
-            return fetch('https://toggl.com'+uri,{
-                headers:{
-                    Authorization:'Basic '+btoa(`${token}:api_token`)
+        function get(token, uri) {
+            return fetch('https://toggl.com' + uri, {
+                headers: {
+                    Authorization: 'Basic ' + btoa(`${token}:api_token`)
                 }
             }).then(r => r.json())
         }
 
-        function displayWorkspaces(user){
+        function displayWorkspaces(user) {
             console.log(user.toggltoken)
-            get(user.toggltoken,'/api/v8/workspaces').then(workspaces => {
-                var defaultWorkspace = user.workspace || (workspaces.find(w => w.name.includes('byu')) || workspaces[0]).id
-                
+            get(user.toggltoken, '/api/v8/workspaces').then(workspaces => {
+                var defaultWorkspace = user.workspace || (workspaces.find(w => w.name.includes('byu')) ||
+                    workspaces[0]).id
+
                 // TODO: create a dynamic radio button array with which workspace to use
                 // (may be called multiple times)
-                console.log(workspaces,defaultWorkspace)
+                console.log(workspaces, defaultWorkspace)
 
-            }).catch(() => {throw new Error('current token is invalid')})
+            }).catch(e => {
+                console.error(e)
+                throw new Error('current token is invalid')
+            })
         }
 
         function save() {
-            if (!uid || !user) { return } // error should already be thrown
+            if (!uid || !user) {
+                return
+            } // error should already be thrown
 
             var toggltoken = document.getElementById('togglToken').value
             var workspace // TODO: if the workspace has been displayed, give the selected's id, otherwise undefined
@@ -57,10 +68,10 @@
                 throw new Error('no toggl token entered')
             }
 
-            get(toggltoken || user.toggltoken,'/api/v9/me')
+            get(toggltoken || user.toggltoken, '/api/v9/me')
                 .then(() => firebase.database().ref(`users/${uid}/toggltoken`).set(toggltoken || user.toggltoken))
-                .then(() => { 
-                    if(workspace != undefined){
+                .then(() => {
+                    if (workspace != undefined) {
                         firebase.database().ref(`users/${uid}/workspace`).set(workspace)
                             .then(() => window.location.href = "./index.html")
                     }
@@ -75,10 +86,12 @@
             if (auth) {
                 uid = auth.uid
                 var first = true
-                firebase.database().ref(`users/${uid}`).on('value',snapshot => {
+                firebase.database().ref(`users/${uid}`).on('value', snapshot => {
                     user = snapshot.val()
                     displayWorkspaces(user)
-                },() => {throw new Error('user doesn\t have access to the database')})
+                }, () => {
+                    throw new Error('user doesn\t have access to the database')
+                })
             } else {
                 window.location.href = "./login.html"
             }
@@ -101,11 +114,19 @@
     </header>
 
     <main class="container">
-        <h1>Please enter your Toggl token:</h1>
+        <h1>Settings</h1>
         <div class="row">
             <div class="input-field col s12">
                 <input id="togglToken" type="text" class="validate">
                 <label for="togglToken">Token</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <select>
+                    <option value="one">One</option>
+                </select>
+                <label>Workspace</label>
             </div>
         </div>
         <div class="row">
