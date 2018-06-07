@@ -1,18 +1,11 @@
 /* eslint no-console:0 */
-
-import firebase from 'firebase/app';
-import 'firebase/database';
-import 'firebase/auth';
-import * as qwest from 'qwest';
-
-const app = firebase.initializeApp({
-    apiKey: 'AIzaSyDivGb3qYsVppVyWu0kQP9TsMxJKVI_2EE',
-    authDomain: 'toggl-collection.firebaseapp.com',
-    databaseURL: 'https://toggl-collection.firebaseio.com',
-    projectId: 'toggl-collection',
-    storageBucket: '',
-    messagingSenderId: '321698368957'
-});
+const GLOBALS = {
+    users:null,
+    user:null,
+    workspace:null,
+    toggltoken:null,
+} 
+    
 
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
@@ -36,14 +29,19 @@ firebase.auth().onAuthStateChanged(user => {
                 return;
             }
             console.log('database:', users);
-            // if they do have access, check if we need their toggle token
-            if (users[user.uid].toggltoken === undefined) {
+            // if they do have access, check if we need their toggle token or workspace
+            if (users[user.uid].toggltoken === undefined || users[user.uid].workspace === undefined) {
                 // don't have toggle api token
                 // TODO: prompt for token and check if it works
                 console.log('need toggltoken');
-                // window.location = './togglToken.html'; // TESTING enable for production
+                window.location = './togglToken.html';
             } else {
+                GLOBALS.users = users
+                GLOBALS.user = user
+                GLOBALS.toggltoken = users[user.uid].toggltoken
+                GLOBALS.workspace = users[user.uid].workspace
                 // we are good to go
+                displayGraph()
             }
         });
     } else {
@@ -63,4 +61,13 @@ function openDatabase(user, cb) {
         }
         cb(null, users);
     }, err => cb(err));
+}
+
+
+function get(token,uri) {
+    return fetch('https://toggl.com'+uri,{
+        headers:{
+            Authorization:'Basic '+btoa(`${token}:api_token`)
+        }
+    }).then(r => r.json())
 }
