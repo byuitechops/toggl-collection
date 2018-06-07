@@ -10,6 +10,39 @@
     background-color: #e67878;
 }
 
+#graph-container .btn{
+    padding: 50px 20px;
+    text-align: center;
+    box-sizing: content-box;
+    font-size: 28pt;
+}
+
+#bar-wrapper {
+    width: 80%;
+    height: 40px;
+}
+
+
+.flex {
+    display: flex;
+    align-items: baseline;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.inline-block {
+    display: inline-block;
+}
 
 /* MATERALIZE changes */
 nav>div {

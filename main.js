@@ -1,4 +1,6 @@
 /* eslint no-console:0 */
+/* global displayGraph, firebase */
+
 const GLOBALS = {
     users:null,
     user:null,
@@ -41,11 +43,8 @@ firebase.auth().onAuthStateChanged(user => {
                 GLOBALS.toggltoken = users[user.uid].toggltoken;
                 GLOBALS.workspace = users[user.uid].workspace;
                 // we are good to go
-<<<<<<< HEAD
-                displayGraph();
-=======
-                displayGraph(0)
->>>>>>> 45776002bfd68c76e2a52a2233777da292f2de3f
+                // displayGraph(weekNum, userId)
+                displayGraph(0);
             }
         });
     } else {
