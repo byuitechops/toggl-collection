@@ -41,7 +41,7 @@ firebase.auth().onAuthStateChanged(user => {
                 GLOBALS.toggltoken = users[user.uid].toggltoken
                 GLOBALS.workspace = users[user.uid].workspace
                 // we are good to go
-                displayGraph()
+                displayGraph(0)
             }
         });
     } else {
