@@ -18,13 +18,13 @@ firebase.auth().onAuthStateChanged(user => {
             email: user.email,
             photoURL: user.photoURL,
             uid: user.uid,
+            admin: false
         };
         console.log('logged in', user);
         // check to see if they have access to the database
         openDatabase(user, (err, users) => {
             if (err) {
                 // they don't have access to the database
-                // TODO: display error
                 console.error('no access');
                 document.querySelector('#msg').innerHTML = '<p>No Access. Please have Ben (or Josh) add you to Firebase</p>';
                 document.querySelector('#msg').classList.remove('hide');
@@ -39,9 +39,7 @@ firebase.auth().onAuthStateChanged(user => {
                 window.location = './settings.html';
             } else {
                 GLOBALS.users = users;
-                GLOBALS.user = user;
-                GLOBALS.toggltoken = users[user.uid].toggltoken;
-                GLOBALS.workspace = users[user.uid].workspace;
+                GLOBALS.user = users[user.uid]
                 // we are good to go
                 // displayGraph(weekNum, userId)
                 displayGraph(0);
@@ -56,16 +54,22 @@ firebase.auth().onAuthStateChanged(user => {
 
 function openDatabase(user, cb) {
     var usersdb = firebase.database().ref('users');
-    usersdb.on('value', snapshot => {
-        var users = snapshot.val();
-        if (typeof users[user.uid] != 'object') {
-            usersdb.child(user.uid).set(user);
-            users[user.uid] = user;
+    usersdb.child(user.uid).on('value',snapshot => {
+        var snap = snapshot.val()
+        if(typeof snap != 'object'){
+            usersdb.child(user.uid).set(user)
+            return
         }
-        cb(null, users);
-    }, err => cb(err));
+        if(snap.admin == true){
+            usersdb.on('value', snapshot => {
+                var users = snapshot.val();
+                cb(null, users);
+            },cb)
+        } else {
+            cb(null, {[user.uid]:snap})
+        }
+    },cb)
 }
-
 
 function get(token,uri) {
     return fetch('https://toggl.com'+uri,{

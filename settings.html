@@ -43,16 +43,14 @@
         function displayWorkspaces(user) {
             console.log(user.toggltoken)
             get(user.toggltoken, '/api/v8/workspaces').then(workspaces => {
-                var defaultWorkspace = user.workspace || (workspaces.find(w => w.name.includes('byu')) ||
-                    workspaces[0]).id
+                var defaultWorkspace = user.workspace || (workspaces.find(w => w.name.includes('byu')) || workspaces[0]).id
 
                 // TODO: create a dynamic radio button array with which workspace to use
                 // (may be called multiple times)
                 console.log(workspaces, defaultWorkspace)
 
             }).catch(e => {
-                console.error(e)
-                throw new Error('current token is invalid')
+                throw new Error('current token is invalid: '+e)
             })
         }
 

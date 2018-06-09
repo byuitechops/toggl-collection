@@ -16,3 +16,11 @@ user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 x-requested-with: XMLHttpRequest
 
 fetch('https://www.toggl.com/api/v2/me',{headers:{Authorization:'Basic '+btoa(`06fdad0b2ab8a31ec7c8401eeec95cc6:api_token`)}}).then(r => r.json()).then(console.log)
+
+
+How has this last week gone? how did you spend your time?
+How much switching back and forth between times.
+How are you doing overtime? when did you work on what? how much time did you spend on it?
+Does it add up to 15 hours? Mark 15 hours
+Across project who spent most time? When was the project worked on through out time?
+Archived list of projects - store the projects on

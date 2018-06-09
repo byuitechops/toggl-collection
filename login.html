@@ -22,7 +22,7 @@
       /* Firebase authentication */
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
       ui.start('#firebaseui-auth-container', {
-         signInSuccessUrl: 'http://localhost:8080',
+         signInSuccessUrl: '//localhost:8080',
          signInOptions: [firebase.auth.GithubAuthProvider.PROVIDER_ID, ],
          // Terms of service url.
          tosUrl: '<your-tos-url>',
